@@ -26,8 +26,9 @@ class ImageFolder(data.Dataset):
 		"""Reads an image from a file and preprocesses it and returns."""
 		image_path = self.image_paths[index]
 		filename = image_path.split('_')[-1][:-len(".jpg")]
-		GT_path = self.GT_paths + 'ISIC_' + filename + '_segmentation.png'
-
+		num_filename = filename.split('/')[-1]
+		#GT_path = self.GT_paths + 'ISIC_' + filename + '_segmentation.png'
+		GT_path = self.GT_paths + num_filename + '.png'
 		image = Image.open(image_path)
 		GT = Image.open(GT_path)
 
