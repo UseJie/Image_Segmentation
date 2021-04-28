@@ -9,7 +9,7 @@ from torchvision.transforms import functional as F
 from PIL import Image
 
 class ImageFolder(data.Dataset):
-	def __init__(self, root,image_size=224,mode='train',augmentation_prob=0.4):
+	def __init__(self, root, image_size=224, mode='train', augmentation_prob=0.4):
 		"""Initializes image paths and preprocessing module."""
 		self.root = root
 		
@@ -18,7 +18,8 @@ class ImageFolder(data.Dataset):
 		self.image_paths = list(map(lambda x: os.path.join(root, x), os.listdir(root)))
 		self.image_size = image_size
 		self.mode = mode
-		self.RotationDegree = [0,90,180,270]
+		# 旋转角度
+		self.RotationDegree = [0, 90, 180, 270]
 		self.augmentation_prob = augmentation_prob
 		print("image count in {} path :{}".format(self.mode,len(self.image_paths)))
 
@@ -27,6 +28,7 @@ class ImageFolder(data.Dataset):
 		image_path = self.image_paths[index]
 		filename = image_path.split('_')[-1][:-len(".jpg")]
 		num_filename = filename.split('/')[-1]
+		# 添加GT路径
 		#GT_path = self.GT_paths + 'ISIC_' + filename + '_segmentation.png'
 		GT_path = self.GT_paths + num_filename + '.png'
 		image = Image.open(image_path)
@@ -41,6 +43,7 @@ class ImageFolder(data.Dataset):
 		p_transform = random.random()
 
 		if (self.mode == 'train') and p_transform <= self.augmentation_prob:
+			#随机选择旋转角度
 			RotationDegree = random.randint(0,3)
 			RotationDegree = self.RotationDegree[RotationDegree]
 			if (RotationDegree == 90) or (RotationDegree == 270):

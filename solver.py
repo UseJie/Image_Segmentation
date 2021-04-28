@@ -103,7 +103,6 @@ class Solver(object):
 		img = img*255
 		return img
 
-
 	def train(self):
 		"""Train encoder, generator and discriminator."""
 
@@ -182,13 +181,13 @@ class Solver(object):
 			
 
 				# Decay learning rate
-				if (epoch+1) > (self.num_epochs - self.num_epochs_decay):
-					lr -= (self.lr / float(self.num_epochs_decay))
-					for param_group in self.optimizer.param_groups:
-						param_group['lr'] = lr
-					print ('Decay learning rate to lr: {}.'.format(lr))
-				
-				
+				# if (epoch+1) > (self.num_epochs - self.num_epochs_decay):
+				# 	lr -= (self.lr / float(self.num_epochs_decay))
+				# 	for param_group in self.optimizer.param_groups:
+				# 		param_group['lr'] = lr
+				# 	print ('Decay learning rate to lr: {}.'.format(lr))
+				#
+				#
 				#===================================== Validation ====================================#
 				self.unet.train(False)
 				self.unet.eval()
@@ -225,9 +224,9 @@ class Solver(object):
 				DC = DC/length
 				unet_score = JS + DC
 
-				print('[Validation] Acc: %.4f, SE: %.4f, SP: %.4f, PC: %.4f, F1: %.4f, JS: %.4f, DC: %.4f'%(acc,SE,SP,PC,F1,JS,DC))
+				print('\n[Validation] Acc: %.4f, SE: %.4f, SP: %.4f, PC: %.4f, F1: %.4f, JS: %.4f, DC: %.4f'%(acc,SE,SP,PC,F1,JS,DC))
 				
-				'''
+
 				torchvision.utils.save_image(images.data.cpu(),
 											os.path.join(self.result_path,
 														'%s_valid_%d_image.png'%(self.model_type,epoch+1)))
@@ -237,11 +236,11 @@ class Solver(object):
 				torchvision.utils.save_image(GT.data.cpu(),
 											os.path.join(self.result_path,
 														'%s_valid_%d_GT.png'%(self.model_type,epoch+1)))
-				'''
+
 
 
 				# Save Best U-Net model
-				if unet_score > best_unet_score:
+				if unet_score >= best_unet_score:
 					best_unet_score = unet_score
 					best_epoch = epoch
 					best_unet = self.unet.state_dict()
